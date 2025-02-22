@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('versions', function (Blueprint $table) {
             $table->id();
-            $table->string('version-name-auto');
-            $table->string('verison-name');
-            $table->string('realese-date');
-            $table->string('version-description');
+            $table->string('version_name');
+            $table->string('version_number');
+            $table->date('release_date');
+            $table->text('version_description');
             $table->timestamps();
         });
     }
