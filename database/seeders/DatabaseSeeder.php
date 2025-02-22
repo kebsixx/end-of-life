@@ -13,13 +13,13 @@ class DatabaseSeeder extends Seeder
         // Default technician credentials:
         // Username: technician
         // Email: technician@example.com
-        // Password: techpassword123
+        // Password: password
         
         User::create([
             'name' => 'Teknisi',
             'username' => 'technician',
             'email' => 'technician@example.com',
-            'password' => Hash::make('techpassword123'),
+            'password' => Hash::make('password'),
         ]);
 
         // Test user for development
