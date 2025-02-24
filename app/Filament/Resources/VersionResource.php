@@ -39,6 +39,8 @@ class VersionResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('version_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('version_number')
