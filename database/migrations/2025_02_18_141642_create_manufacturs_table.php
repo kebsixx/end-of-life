@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('manufacturs', function (Blueprint $table) {
             $table->id();
-            $table->string('product-name');
-            $table->string('license-duration');
-            $table->string('license-number');
-            $table->string('first-installation-date');
-            $table->string('last-installation-date');
+            $table->foreignId('category_id')
+                ->constrained('categories')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->string('product_name');
+            $table->string('license_duration');
+            $table->string('license_number');
+            $table->string('first_installation_date');
+            $table->string('last_installation_date');
             $table->timestamps();
         });
     }
