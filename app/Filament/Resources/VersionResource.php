@@ -2,38 +2,36 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\VersionResource\Pages;
-use App\Filament\Resources\VersionResource\RelationManagers;
-use App\Models\Version;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Version;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Symfony\Component\Console\Input\Input;
+use Filament\Resources\Resource;
+use Filament\Tables\Actions\ViewAction;
+use App\Filament\Resources\VersionResource\Pages;
 
 class VersionResource extends Resource
 {
     protected static ?string $model = Version::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-link';
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('version-name-auto')
+                Forms\Components\TextInput::make('version_name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('verison-name')
+                Forms\Components\TextInput::make('version_number')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('realese-date')
+                Forms\Components\DatePicker::make('release_date')
                     ->required(),
-                Forms\Components\TextInput::make('version-description')
-                    ->required()
+                Forms\Components\Textarea::make('version_description')
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -41,14 +39,13 @@ class VersionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('version-name-auto')
+                Tables\Columns\TextColumn::make('version_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('verison-name')
+                Tables\Columns\TextColumn::make('version_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('realese-date')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('version-description')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('release_date')
+                    ->date()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -62,6 +59,7 @@ class VersionResource extends Resource
                 //
             ])
             ->actions([
+                ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
