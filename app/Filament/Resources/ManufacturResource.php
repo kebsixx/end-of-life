@@ -3,15 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ManufacturResource\Pages;
-use App\Filament\Resources\ManufacturResource\RelationManagers;
 use App\Models\Manufactur;
+use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ManufacturResource extends Resource
 {
@@ -23,18 +21,20 @@ class ManufacturResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('product-name')
+                Forms\Components\Select::make('name')
+                    ->label('Product Name')
+                    ->options(Category::query()->pluck('name', 'name'))
+                    ->required()
+                    ->searchable(),
+                Forms\Components\TextInput::make('license_duration')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('license-duration')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('license-number')
+                Forms\Components\TextInput::make('license_number')
                     ->required()
                     ->numeric(),
-                Forms\Components\DatePicker::make('first-installation-date')
+                Forms\Components\DatePicker::make('first_installation_date')
                     ->required(),
-                Forms\Components\DatePicker::make('last-installation-date')
+                Forms\Components\DatePicker::make('last_installation_date')
                     ->required(),
             ]);
     }
@@ -43,16 +43,24 @@ class ManufacturResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('product-name')
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Product Name')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('license-duration')
+                Tables\Columns\TextColumn::make('license_duration')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('license-number')
+                Tables\Columns\TextColumn::make('license_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('first-installation-date')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('last-installation-date')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('first_installation_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('last_installation_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
