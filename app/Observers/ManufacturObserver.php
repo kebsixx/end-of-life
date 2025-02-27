@@ -29,10 +29,9 @@ class ManufacturObserver
         $notifyDate = $this->calculateNotifyDate($manufactur);
 
         if (now()->gte($notifyDate)) {
-            // Send notification to all users
-            User::all()->each(function ($user) use ($manufactur) {
-                $user->notify(new LicenseExpiryNotification($manufactur));
-            });
+            // Send notification
+            $notification = new LicenseExpiryNotification($manufactur);
+            $notification->send();
 
             $manufactur->update(['is_notified' => true]);
         }

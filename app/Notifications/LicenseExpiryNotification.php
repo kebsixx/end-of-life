@@ -13,23 +13,22 @@ class LicenseExpiryNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return []; // Kosongkan karena kita hanya menggunakan pop-up
     }
 
-    public function toDatabase($notifiable): array
+    public function send(): void
     {
         $expiryDate = Carbon::parse($this->manufactur->last_installation_date);
         $now = now();
 
-        // Menggunakan abs() untuk nilai absolut dan ceil() untuk pembulatan ke atas
         $daysLeft = ceil(abs($now->diffInDays($expiryDate)));
-
         $status = $now->gt($expiryDate) ? 'expired' : 'will expire';
 
-        return FilamentNotification::make()
+        FilamentNotification::make()
             ->title('License Expiration Warning')
-            ->body("License for {$this->manufactur->name} {$status} in {$daysLeft} days. (License: {$this->manufactur->license_number})")
+            ->body("License for {$this->manufactur->name} {$status} in {$daysLeft} days")
             ->warning()
-            ->getDatabaseMessage();
+            ->persistent()
+            ->send();
     }
 }
