@@ -26,7 +26,7 @@ class LicenseExpiryNotification extends Notification
 
         FilamentNotification::make()
             ->title('License Expiration Warning')
-            ->body("License for {$this->manufactur->name} {$status} in {$daysLeft} days")
+            ->body("License for {$this->manufactur->name} {$status} in {$daysLeft} days on {$expiryDate->format('d F Y')} (License Number: {$this->manufactur->license_number})")
             ->warning()
             ->persistent()
             ->send();
