@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateManufactur extends CreateRecord
 {
     protected static string $resource = ManufacturResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
