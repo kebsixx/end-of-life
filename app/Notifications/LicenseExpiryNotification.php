@@ -9,7 +9,10 @@ use Carbon\Carbon;
 
 class LicenseExpiryNotification extends Notification
 {
-    public function __construct(protected Manufactur $manufactur) {}
+    public function __construct(
+        protected Manufactur $manufactur,
+        protected int $daysBeforeExpiry
+    ) {}
 
     public function via(object $notifiable): array
     {
@@ -21,12 +24,9 @@ class LicenseExpiryNotification extends Notification
         $expiryDate = Carbon::parse($this->manufactur->last_installation_date);
         $now = now();
 
-        $daysLeft = ceil(abs($now->diffInDays($expiryDate)));
-        $status = $now->gt($expiryDate) ? 'expired' : 'will expire';
-
         FilamentNotification::make()
             ->title('License Expiration Warning')
-            ->body("License for {$this->manufactur->name} {$status} in {$daysLeft} days on {$expiryDate->format('d F Y')} (License Number: {$this->manufactur->license_number})")
+            ->body("License for {$this->manufactur->name} will expire in {$this->daysBeforeExpiry} days on {$expiryDate->format('d F Y')} (License Number: {$this->manufactur->license_number})")
             ->warning()
             ->persistent()
             ->send();

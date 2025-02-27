@@ -41,11 +41,34 @@ class ManufacturResource extends Resource
                 Forms\Components\DatePicker::make('last_installation_date')
                     ->label('Last Installation Date')
                     ->required(),
-                Forms\Components\TextInput::make('notification_period')
-                    ->label('Notification Before Expiry')
-                    ->placeholder('1 week')
-                    ->helperText('Example: 1 day, 3 days, 1 week, etc.')
-                    ->required(),
+                Forms\Components\CheckboxList::make('notification_periods')
+                    ->label('Notification Periods')
+                    ->options([
+                        'notify_90_days' => '90 days before expiry',
+                        'notify_30_days' => '30 days before expiry',
+                        'notify_7_days' => '7 days before expiry',
+                    ])
+                    ->columns(3)
+                    ->maxItems(2)
+                    ->helperText('Select up to 2 notification periods')
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
+                        if (count($state) > 2) {
+                            array_pop($state);
+                            $set('notification_periods', $state);
+                        }
+
+                        // Set individual notification fields
+                        $set('notify_90_days', in_array('notify_90_days', $state));
+                        $set('notify_30_days', in_array('notify_30_days', $state));
+                        $set('notify_7_days', in_array('notify_7_days', $state));
+                    })
+                    ->dehydrated(false), // Don't save the array itself to the database
+
+                // Add these hidden fields to store the actual boolean values
+                Forms\Components\Hidden::make('notify_90_days'),
+                Forms\Components\Hidden::make('notify_30_days'),
+                Forms\Components\Hidden::make('notify_7_days'),
             ]);
     }
 
@@ -68,16 +91,6 @@ class ManufacturResource extends Resource
                 Tables\Columns\TextColumn::make('last_installation_date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('notification_period')
-                    ->label('Notify Before')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('is_notified')
-                    ->label('Notification Sent')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-circle')
-                    ->falseIcon('heroicon-o-x-circle')
-                    ->trueColor('success')
-                    ->falseColor('danger'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -18,8 +18,12 @@ return new class extends Migration
             $table->string('license_number');
             $table->date('first_installation_date');
             $table->date('last_installation_date');
-            $table->string('notification_period');
-            $table->boolean('is_notified')->default(false);
+            $table->boolean('notify_90_days')->default(false);
+            $table->boolean('notify_30_days')->default(false);
+            $table->boolean('notify_7_days')->default(false);
+            $table->boolean('is_notified_90')->default(false);
+            $table->boolean('is_notified_30')->default(false);
+            $table->boolean('is_notified_7')->default(false);
             $table->timestamps();
         });
     }

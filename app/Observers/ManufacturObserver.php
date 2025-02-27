@@ -21,19 +21,28 @@ class ManufacturObserver
 
     private function checkNotification(Manufactur $manufactur): void
     {
-        if ($manufactur->is_notified) {
-            return;
-        }
-
         $expiryDate = Carbon::parse($manufactur->last_installation_date);
-        $notifyDate = $this->calculateNotifyDate($manufactur);
+        $now = now();
 
-        if (now()->gte($notifyDate)) {
-            // Send notification
-            $notification = new LicenseExpiryNotification($manufactur);
-            $notification->send();
+        $notifications = [
+            ['days' => 90, 'field' => 'notify_90_days', 'notified' => 'is_notified_90'],
+            ['days' => 30, 'field' => 'notify_30_days', 'notified' => 'is_notified_30'],
+            ['days' => 7, 'field' => 'notify_7_days', 'notified' => 'is_notified_7'],
+        ];
 
-            $manufactur->update(['is_notified' => true]);
+        foreach ($notifications as $notification) {
+            if ($manufactur->{$notification['field']} && !$manufactur->{$notification['notified']}) {
+                $daysBeforeExpiry = $expiryDate->copy()->subDays($notification['days']);
+
+                if ($now->gte($daysBeforeExpiry)) {
+                    $notifier = new LicenseExpiryNotification($manufactur, $notification['days']);
+                    $notifier->send();
+
+                    $manufactur->update([
+                        $notification['notified'] => true
+                    ]);
+                }
+            }
         }
     }
 
