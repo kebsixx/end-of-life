@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('license_duration');
             $table->string('license_number');
-            $table->string('first_installation_date');
-            $table->string('last_installation_date');
+            $table->date('first_installation_date');
+            $table->date('last_installation_date');
+            $table->string('notification_period');
+            $table->boolean('is_notified')->default(false);
             $table->timestamps();
         });
     }
