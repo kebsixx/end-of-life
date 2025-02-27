@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Category;
+use App\Models\Version;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,7 +17,7 @@ class DatabaseSeeder extends Seeder
         // Username: technician
         // Email: technician@example.com
         // Password: password
-        
+
         User::create([
             'name' => 'Teknisi',
             'username' => 'technician',
@@ -29,5 +32,59 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
         ]);
+
+        // Categories Seed
+        $categories = [
+            [
+                'name' => 'Software',
+                'status' => 'aktif',
+                'description' => 'Kategori untuk semua jenis software',
+            ],
+            [
+                'name' => 'Hardware',
+                'status' => 'aktif',
+                'description' => 'Kategori untuk semua jenis hardware',
+            ],
+            [
+                'name' => 'Network',
+                'status' => 'aktif',
+                'description' => 'Kategori untuk perangkat jaringan',
+            ],
+            [
+                'name' => 'Security',
+                'status' => 'aktif',
+                'description' => 'Kategori untuk perangkat keamanan',
+            ],
+        ];
+
+        foreach ($categories as $category) {
+            Category::create($category);
+        }
+
+        // Versions Seed
+        $versions = [
+            [
+                'version_name' => 'Initial Release',
+                'version_number' => '1.0.0',
+                'release_date' => Carbon::now()->addWeek(),
+                'version_description' => 'Versi pertama dengan fitur dasar',
+            ],
+            [
+                'version_name' => 'Security Update',
+                'version_number' => '1.0.1',
+                'release_date' => Carbon::now()->addWeeks(2),
+                'version_description' => 'Update keamanan dan perbaikan bug',
+            ],
+            [
+                'version_name' => 'Feature Update',
+                'version_number' => '1.1.0',
+                'release_date' => Carbon::now()->addMonth(),
+                'version_description' => 'Penambahan fitur baru dan peningkatan performa',
+            ],
+        ];
+
+        foreach ($versions as $version) {
+            Version::create($version);
+        }
     }
 }
