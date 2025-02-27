@@ -52,23 +52,43 @@ class ManufacturResource extends Resource
                     ->maxItems(2)
                     ->helperText('Select up to 2 notification periods')
                     ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
+                    ->afterStateHydrated(function ($state, $record, callable $set) {
+                        if ($record) {
+                            $selected = [];
+                            if ($record->notify_90_days) $selected[] = 'notify_90_days';
+                            if ($record->notify_30_days) $selected[] = 'notify_30_days';
+                            if ($record->notify_7_days) $selected[] = 'notify_7_days';
+                            $set('notification_periods', $selected);
+                        }
+                    })
+                    ->afterStateUpdated(function ($state, callable $set) {
                         if (count($state) > 2) {
                             array_pop($state);
                             $set('notification_periods', $state);
                         }
 
-                        // Set individual notification fields
-                        $set('notify_90_days', in_array('notify_90_days', $state));
-                        $set('notify_30_days', in_array('notify_30_days', $state));
-                        $set('notify_7_days', in_array('notify_7_days', $state));
-                    })
-                    ->dehydrated(false), // Don't save the array itself to the database
+                        // Reset all notification flags first
+                        $set('notify_90_days', false);
+                        $set('notify_30_days', false);
+                        $set('notify_7_days', false);
+                        $set('is_notified_90', false);
+                        $set('is_notified_30', false);
+                        $set('is_notified_7', false);
 
-                // Add these hidden fields to store the actual boolean values
+                        // Set new notification flags
+                        foreach ($state as $notification) {
+                            $set($notification, true);
+                        }
+                    })
+                    ->dehydrated(false),
+
+                // Hidden fields for notification flags
                 Forms\Components\Hidden::make('notify_90_days'),
                 Forms\Components\Hidden::make('notify_30_days'),
                 Forms\Components\Hidden::make('notify_7_days'),
+                Forms\Components\Hidden::make('is_notified_90'),
+                Forms\Components\Hidden::make('is_notified_30'),
+                Forms\Components\Hidden::make('is_notified_7'),
             ]);
     }
 
