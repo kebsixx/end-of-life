@@ -60,31 +60,5 @@ class DatabaseSeeder extends Seeder
         foreach ($categories as $category) {
             Category::create($category);
         }
-
-        // Versions Seed
-        $versions = [
-            [
-                'version_name' => 'Initial Release',
-                'version_number' => '1.0.0',
-                'release_date' => Carbon::now()->addWeek(),
-                'version_description' => 'Versi pertama dengan fitur dasar',
-            ],
-            [
-                'version_name' => 'Security Update',
-                'version_number' => '1.0.1',
-                'release_date' => Carbon::now()->addWeeks(2),
-                'version_description' => 'Update keamanan dan perbaikan bug',
-            ],
-            [
-                'version_name' => 'Feature Update',
-                'version_number' => '1.1.0',
-                'release_date' => Carbon::now()->addMonth(),
-                'version_description' => 'Penambahan fitur baru dan peningkatan performa',
-            ],
-        ];
-
-        foreach ($versions as $version) {
-            Version::create($version);
-        }
     }
 }

@@ -29,9 +29,60 @@ class VersionResource extends Resource
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('release_date')
                     ->required(),
+                Forms\Components\DatePicker::make('expiry_date')
+                    ->label('Expiry Date')
+                    ->required(),
                 Forms\Components\Textarea::make('version_description')
                     ->maxLength(65535)
                     ->columnSpanFull(),
+                Forms\Components\CheckboxList::make('notification_periods')
+                    ->label('Notification Periods')
+                    ->options([
+                        'notify_90_days' => '90 days before expiry',
+                        'notify_30_days' => '30 days before expiry',
+                        'notify_7_days' => '7 days before expiry',
+                    ])
+                    ->columns(3)
+                    ->maxItems(2)
+                    ->helperText('Select up to 2 notification periods')
+                    ->reactive()
+                    ->afterStateHydrated(function ($state, $record, callable $set) {
+                        if ($record) {
+                            $selected = [];
+                            if ($record->notify_90_days) $selected[] = 'notify_90_days';
+                            if ($record->notify_30_days) $selected[] = 'notify_30_days';
+                            if ($record->notify_7_days) $selected[] = 'notify_7_days';
+                            $set('notification_periods', $selected);
+                        }
+                    })
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        if (count($state) > 2) {
+                            array_pop($state);
+                            $set('notification_periods', $state);
+                        }
+
+                        // Reset all notification flags first
+                        $set('notify_90_days', false);
+                        $set('notify_30_days', false);
+                        $set('notify_7_days', false);
+                        $set('is_notified_90', false);
+                        $set('is_notified_30', false);
+                        $set('is_notified_7', false);
+
+                        // Set new notification flags
+                        foreach ($state as $notification) {
+                            $set($notification, true);
+                        }
+                    })
+                    ->dehydrated(false),
+
+                // Hidden fields for notification flags
+                Forms\Components\Hidden::make('notify_90_days'),
+                Forms\Components\Hidden::make('notify_30_days'),
+                Forms\Components\Hidden::make('notify_7_days'),
+                Forms\Components\Hidden::make('is_notified_90'),
+                Forms\Components\Hidden::make('is_notified_30'),
+                Forms\Components\Hidden::make('is_notified_7'),
             ]);
     }
 
@@ -46,6 +97,9 @@ class VersionResource extends Resource
                 Tables\Columns\TextColumn::make('version_number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('release_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('expiry_date')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
