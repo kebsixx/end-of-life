@@ -36,24 +36,24 @@ class DatabaseSeeder extends Seeder
         // Categories Seed
         $categories = [
             [
-                'name' => 'Software',
+                'product_name' => 'Windows 11',
                 'status' => 'aktif',
-                'description' => 'Kategori untuk semua jenis software',
+                'description' => 'Operating System Windows 11',
             ],
             [
-                'name' => 'Hardware',
+                'product_name' => 'Microsoft Office',
                 'status' => 'aktif',
-                'description' => 'Kategori untuk semua jenis hardware',
+                'description' => 'Microsoft Office Suite',
             ],
             [
-                'name' => 'Network',
+                'product_name' => 'Antivirus Pro',
                 'status' => 'aktif',
-                'description' => 'Kategori untuk perangkat jaringan',
+                'description' => 'Security Software',
             ],
             [
-                'name' => 'Security',
+                'product_name' => 'Database Server',
                 'status' => 'aktif',
-                'description' => 'Kategori untuk perangkat keamanan',
+                'description' => 'Database Management System',
             ],
         ];
 

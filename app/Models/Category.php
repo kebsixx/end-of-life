@@ -8,7 +8,7 @@ class Category extends Model
 {
     protected $table = 'categories';
     protected $fillable = [
-        'name',
+        'product_name',
         'status',
         'description',
     ];
