@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('versions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
             $table->string('version_name');
             $table->string('version_number');
             $table->date('release_date');

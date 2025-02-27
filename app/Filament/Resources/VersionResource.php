@@ -21,6 +21,12 @@ class VersionResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('category_id')
+                    ->label('Product Category')
+                    ->relationship('category', 'product_name')
+                    ->required()
+                    ->searchable()
+                    ->preload(),
                 Forms\Components\TextInput::make('version_name')
                     ->required()
                     ->maxLength(255),
@@ -93,6 +99,10 @@ class VersionResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('version_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('category.product_name')
+                    ->label('Product Category')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('version_number')
                     ->searchable(),

@@ -9,6 +9,7 @@ class Version extends Model
     protected $table = 'versions';
 
     protected $fillable = [
+        'category_id',
         'version_name',
         'version_number',
         'release_date',
@@ -32,4 +33,9 @@ class Version extends Model
         'is_notified_30' => 'boolean',
         'is_notified_7' => 'boolean',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
