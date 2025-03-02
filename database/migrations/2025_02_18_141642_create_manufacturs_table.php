@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('manufacturs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('license_duration');
+            $table->foreignId('category_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->string('license_duration')->nullable();
             $table->string('license_number');
             $table->date('first_installation_date');
             $table->date('last_installation_date');

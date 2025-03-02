@@ -12,4 +12,14 @@ class Category extends Model
         'status',
         'description',
     ];
+
+    public function manufactur()
+    {
+        return $this->hasMany(Manufactur::class);
+    }
+
+    public function version()
+    {
+        return $this->hasOne(Version::class);
+    }
 }

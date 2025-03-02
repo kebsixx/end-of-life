@@ -22,11 +22,12 @@ class ManufacturResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('name')
-                    ->label('Product Name')
-                    ->options(Category::query()->pluck('product_name', 'product_name'))
+                Forms\Components\Select::make('category_id')
+                    ->label('Product Category')
+                    ->relationship('category', 'product_name')
                     ->required()
-                    ->searchable(),
+                    ->searchable()
+                    ->preload(),
                 Forms\Components\TextInput::make('license_duration')
                     ->label('License Duration')
                     ->placeholder('1 year')

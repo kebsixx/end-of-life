@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Manufactur extends Model
 {
     protected $table = 'manufacturs';
     protected $fillable = [
-        'name',
+        'category_id',
         'license_duration',
         'license_number',
         'first_installation_date',
@@ -18,7 +19,7 @@ class Manufactur extends Model
         'notify_7_days',
         'is_notified_90',
         'is_notified_30',
-        'is_notified_7'
+        'is_notified_7',
     ];
 
     protected $casts = [
@@ -31,4 +32,9 @@ class Manufactur extends Model
         'is_notified_30' => 'boolean',
         'is_notified_7' => 'boolean',
     ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
