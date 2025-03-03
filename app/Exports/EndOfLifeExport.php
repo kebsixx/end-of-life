@@ -7,9 +7,10 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class EndOfLifeExport implements FromCollection, WithHeadings, WithMapping, WithStyles
+class EndOfLifeExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize
 {
     public function collection()
     {
@@ -44,10 +45,25 @@ class EndOfLifeExport implements FromCollection, WithHeadings, WithMapping, With
 
     public function styles(Worksheet $sheet)
     {
+        // Mengatur style
+        $sheet->getStyle('A1:G1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:G1')->getFill()->setFillType('solid')->getStartColor()->setRGB('E2E8F0');
+
+        // Mengatur border untuk semua cell
+        $lastRow = $sheet->getHighestRow();
+        $sheet->getStyle('A1:G' . $lastRow)->getBorders()->getAllBorders()->setBorderStyle('thin');
+
+        // Mengatur alignment
+        $sheet->getStyle('A1:G' . $lastRow)->getAlignment()->setVertical('center');
+        $sheet->getStyle('A1:G' . $lastRow)->getAlignment()->setHorizontal('left');
+
+        // Mengatur wrap text untuk deskripsi
+        $sheet->getStyle('B2:B' . $lastRow)->getAlignment()->setWrapText(true);
+
         return [
             1 => ['font' => ['bold' => true]],
             'A1:G1' => ['fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => 'E2E8F0']]],
-            'A1:G' . $sheet->getHighestRow() => ['borders' => ['allBorders' => ['borderStyle' => 'thin']]],
+            'A1:G' . $lastRow => ['borders' => ['allBorders' => ['borderStyle' => 'thin']]],
         ];
     }
 }

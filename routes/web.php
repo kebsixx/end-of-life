@@ -7,4 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/export', [ExportController::class, 'export'])->name('export.excel');
+Route::middleware([
+    'auth',
+    'verified'
+])->group(function () {
+    Route::get('/export', [ExportController::class, 'export'])->name('export.excel');
+});
