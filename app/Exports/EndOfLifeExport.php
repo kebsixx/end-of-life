@@ -35,11 +35,11 @@ class EndOfLifeExport implements FromCollection, WithHeadings, WithMapping, With
         return [
             $category->product_name,
             $category->description,
-            optional($category->manufactur->first())->license_duration ?? '-',
-            optional($category->manufactur->first())->first_installation_date?->format('Y-m-d') ?? '-',
-            optional($category->manufactur->first())->last_installation_date?->format('Y-m-d') ?? '-',
-            $category->version->release_date ?? '-',
-            $category->version->expiry_date ?? '-',
+            $category->manufactur->first()?->license_duration ?? '-',
+            $category->manufactur->first()?->first_installation_date?->translatedFormat('j F Y') ?? '-',
+            $category->manufactur->first()?->last_installation_date?->translatedFormat('j F Y') ?? '-',
+            $category->version?->release_date?->translatedFormat('j F Y') ?? '-',
+            $category->version?->expiry_date?->translatedFormat('j F Y') ?? '-',
         ];
     }
 
