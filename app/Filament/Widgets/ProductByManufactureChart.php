@@ -44,7 +44,7 @@ class ProductByManufactureChart extends ChartWidget
                     'borderWidth' => 1,
                 ],
             ],
-            'labels' => $manufactures->pluck('name')->toArray(),
+            'labels' => $manufactures->pluck('category_id')->toArray(),
         ];
     }
 
