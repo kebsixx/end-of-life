@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @foreach($this->getData() as $category)
+                    @foreach($data as $category)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 {{ $category->product_name }}
