@@ -47,16 +47,16 @@
                                 {{ $category->manufactur->first()?->license_duration ?? '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->manufactur->first()?->first_installation_date?->format('Y-m-d') ?? '-' }}
+                                {{ $category->manufactur->first()?->first_installation_date?->translatedFormat('j F Y') ?? '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->manufactur->first()?->last_installation_date?->format('Y-m-d') ?? '-' }}
+                                {{ $category->manufactur->first()?->last_installation_date?->translatedFormat('j F Y') ?? '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->version?->release_date?->format('Y-m-d') ?? '-' }}
+                                {{ $category->version?->release_date?->translatedFormat('j F Y') ?? '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->version?->expiry_date?->format('Y-m-d') ?? '-' }}
+                                {{ $category->version?->expiry_date?->translatedFormat('j F Y') ?? '-' }}
                             </td>
                         </tr>
                     @endforeach
