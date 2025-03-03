@@ -1,12 +1,5 @@
 <x-filament::page>
     <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="flex justify-between items-center p-6 border-b">
-            <h1 class="text-2xl font-semibold text-gray-900">End of Life Data</h1>
-            <a href="{{ route('export.excel') }}" class="filament-button filament-button-size-md inline-flex items-center justify-center py-2 px-4 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset min-h-[2.25rem] bg-primary-600 text-white border-transparent hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700">
-                Export to Excel
-            </a>
-        </div>
-        
         <div class="overflow-x-auto">
             <table class="w-full divide-y divide-gray-200">
                 <thead>
