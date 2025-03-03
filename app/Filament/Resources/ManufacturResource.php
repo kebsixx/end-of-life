@@ -97,10 +97,10 @@ class ManufacturResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Product Name')
-                    ->sortable()
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('category.product_name')
+                    ->label('Product Category')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('license_duration')
                     ->label('Duration')
                     ->searchable(),
