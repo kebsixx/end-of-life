@@ -12,9 +12,41 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class EndOfLifeExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize
 {
+    protected $sortField;
+    protected $sortDirection;
+
+    public function __construct($sortField = 'first_installation_date', $sortDirection = 'asc')
+    {
+        $this->sortField = $sortField;
+        $this->sortDirection = $sortDirection;
+    }
+
     public function collection()
     {
-        return Category::with(['manufactur', 'version'])->get();
+        $data = Category::with(['manufactur' => function ($query) {
+            $query->latest();
+        }, 'version'])->get();
+
+        return $data->sort(function ($a, $b) {
+            $aValue = $this->getValueForSort($a);
+            $bValue = $this->getValueForSort($b);
+
+            if ($this->sortDirection === 'asc') {
+                return $aValue <=> $bValue;
+            }
+            return $bValue <=> $aValue;
+        });
+    }
+
+    private function getValueForSort($category)
+    {
+        return match ($this->sortField) {
+            'first_installation_date' => $category->manufactur->first()?->first_installation_date,
+            'last_installation_date' => $category->manufactur->first()?->last_installation_date,
+            'release_date' => $category->version?->release_date,
+            'expiry_date' => $category->version?->expiry_date,
+            default => null
+        };
     }
 
     public function headings(): array
@@ -32,6 +64,7 @@ class EndOfLifeExport implements FromCollection, WithHeadings, WithMapping, With
 
     public function map($category): array
     {
+        // Format dates consistently with blade template
         return [
             $category->product_name,
             $category->description,
@@ -45,12 +78,13 @@ class EndOfLifeExport implements FromCollection, WithHeadings, WithMapping, With
 
     public function styles(Worksheet $sheet)
     {
-        // Mengatur style
+        $lastRow = $sheet->getHighestRow();
+
+        // Header styling
         $sheet->getStyle('A1:G1')->getFont()->setBold(true);
         $sheet->getStyle('A1:G1')->getFill()->setFillType('solid')->getStartColor()->setRGB('E2E8F0');
 
         // Mengatur border untuk semua cell
-        $lastRow = $sheet->getHighestRow();
         $sheet->getStyle('A1:G' . $lastRow)->getBorders()->getAllBorders()->setBorderStyle('thin');
 
         // Mengatur alignment

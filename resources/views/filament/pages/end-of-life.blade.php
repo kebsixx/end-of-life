@@ -13,17 +13,45 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Duration
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="sortBy('first_installation_date')">
                             First Install
+                            @if ($sortField === 'first_installation_date')
+                                @if ($sortDirection === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="sortBy('last_installation_date')">
                             Last Install
+                            @if ($sortField === 'last_installation_date')
+                                @if ($sortDirection === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="sortBy('release_date')">
                             Release Date
+                            @if ($sortField === 'release_date')
+                                @if ($sortDirection === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer" wire:click="sortBy('expiry_date')">
                             Expiry Date
+                            @if ($sortField === 'expiry_date')
+                                @if ($sortDirection === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
                         </th>
                     </tr>
                 </thead>

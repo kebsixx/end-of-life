@@ -9,6 +9,12 @@ class ExportController extends Controller
 {
     public function export()
     {
-        return Excel::download(new EndOfLifeExport, 'end-of-life-data.xlsx');
+        $sortField = request('sort_field', 'first_installation_date');
+        $sortDirection = request('sort_direction', 'asc');
+
+        return Excel::download(
+            new EndOfLifeExport($sortField, $sortDirection),
+            'end-of-life-data.xlsx'
+        );
     }
 }
