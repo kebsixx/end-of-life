@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('version_name');
             $table->string('version_number');
             $table->date('release_date');
-            $table->date('expiry_date');  // Added expiry date
+            $table->date('expiry_date');
             $table->text('version_description');
-            // Notification fields
+            $table->string('progress')->nullable();
             $table->boolean('notify_90_days')->default(false);
             $table->boolean('notify_30_days')->default(false);
             $table->boolean('notify_7_days')->default(false);

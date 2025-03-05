@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('license_number');
             $table->date('first_installation_date');
             $table->date('last_installation_date');
+            $table->date('progress')->nullable();
             $table->boolean('notify_90_days')->default(false);
             $table->boolean('notify_30_days')->default(false);
             $table->boolean('notify_7_days')->default(false);
