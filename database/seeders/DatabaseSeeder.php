@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
 
         // Test user for development
         User::create([
-            'name' => 'Test User',
-            'username' => 'testuser',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password'),
+            'name' => 'User',
+            'username' => 'useruser',
+            'email' => 'user@example.com',
+            'password' => Hash::make('userpassword'),
         ]);
 
         // Categories Seed
