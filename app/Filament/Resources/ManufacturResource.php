@@ -15,8 +15,21 @@ use Filament\Tables\Table;
 class ManufacturResource extends Resource
 {
     protected static ?string $model = Manufactur::class;
-
     protected static ?string $navigationIcon = 'heroicon-m-map';
+
+    public static function getNavigationGroup(): ?string
+    {
+        if (auth()->user()->hasRole('user')) {
+            return 'Actions';
+        }
+
+        return null;
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return true; // Allow both roles to see the resource
+    }
 
     public static function form(Form $form): Form
     {
