@@ -29,7 +29,7 @@ class ManufacturResource extends Resource
                     ->searchable()
                     ->preload(),
                 Forms\Components\TextInput::make('license_duration')
-                    ->label('License Duration')
+                    ->label('Duration')
                     ->placeholder('1 year')
                     ->helperText('Example: 1 year, 6 months, etc.')
                     ->required(),
