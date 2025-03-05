@@ -4,10 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Category;
-use App\Models\Version;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
