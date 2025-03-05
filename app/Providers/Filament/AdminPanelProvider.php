@@ -31,6 +31,11 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Sky,
             ])
+            ->brandLogo('/images/logo.PNG')
+            ->brandLogoHeight("40px")
+            ->brandName('End Of Life')
+            ->favicon('/images/favicon.png')
+            ->sidebarFullyCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
