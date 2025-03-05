@@ -56,28 +56,28 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @foreach($data as $category)
+                    @foreach($data as $item)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->product_name }}
+                                {{ $item->product_name }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $category->description }}
+                                {{ $item->description }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->manufactur->first()?->license_duration ?? '-' }}
+                                {{ $item->manufactur?->license_duration ?? '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->manufactur->first()?->first_installation_date?->translatedFormat('j F Y') ?? '-' }}
+                                {{ $item->manufactur?->first_installation_date?->translatedFormat('j F Y') ?? '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->manufactur->first()?->last_installation_date?->translatedFormat('j F Y') ?? '-' }}
+                                {{ $item->manufactur?->last_installation_date?->translatedFormat('j F Y') ?? '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->version?->release_date?->translatedFormat('j F Y') ?? '-' }}
+                                {{ $item->version?->release_date?->translatedFormat('j F Y') ?? '-' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                {{ $category->version?->expiry_date?->translatedFormat('j F Y') ?? '-' }}
+                                {{ $item->version?->expiry_date?->translatedFormat('j F Y') ?? '-' }}
                             </td>
                         </tr>
                     @endforeach

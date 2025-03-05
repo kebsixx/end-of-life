@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use Filament\Pages\Page;
 use App\Models\Category;
+use App\Models\Version;
 use Filament\Actions\Action;
 use Illuminate\Support\Collection;
 
@@ -45,28 +46,47 @@ class EndOfLife extends Page
 
     public function getData(): Collection
     {
-        $data = Category::with(['manufactur' => function ($query) {
+        return Version::with(['category', 'category.manufactur' => function ($query) {
             $query->latest();
-        }, 'version'])->get();
+        }])
+            ->get()
+            ->map(function ($version) {
+                return (object)[
+                    'product_name' => $version->category->product_name,
+                    'description' => $version->category->description,
+                    'version_name' => $version->version_name,
+                    'version_number' => $version->version_number,
+                    'manufactur' => $version->category->manufactur->first(),
+                    'version' => $version,
+                ];
+            })
+            ->filter(function ($item) {
+                return $item->product_name
+                    && $item->description
+                    && $item->manufactur?->license_duration
+                    && $item->manufactur?->first_installation_date
+                    && $item->manufactur?->last_installation_date
+                    && $item->version?->release_date
+                    && $item->version?->expiry_date;
+            })
+            ->sort(function ($a, $b) {
+                $aValue = $this->getValueForSort($a);
+                $bValue = $this->getValueForSort($b);
 
-        return $data->sort(function ($a, $b) {
-            $aValue = $this->getValueForSort($a);
-            $bValue = $this->getValueForSort($b);
-
-            if ($this->sortDirection === 'asc') {
-                return $aValue <=> $bValue;
-            }
-            return $bValue <=> $aValue;
-        });
+                if ($this->sortDirection === 'asc') {
+                    return $aValue <=> $bValue;
+                }
+                return $bValue <=> $aValue;
+            });
     }
 
-    private function getValueForSort($category)
+    private function getValueForSort($item)
     {
         return match ($this->sortField) {
-            'first_installation_date' => $category->manufactur->first()?->first_installation_date ?? null,
-            'last_installation_date' => $category->manufactur->first()?->last_installation_date ?? null,
-            'release_date' => $category->version?->release_date ?? null,
-            'expiry_date' => $category->version?->expiry_date ?? null,
+            'first_installation_date' => $item->manufactur?->first_installation_date ?? null,
+            'last_installation_date' => $item->manufactur?->last_installation_date ?? null,
+            'release_date' => $item->version?->release_date ?? null,
+            'expiry_date' => $item->version?->expiry_date ?? null,
             default => null
         };
     }
