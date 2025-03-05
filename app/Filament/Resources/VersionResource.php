@@ -126,6 +126,8 @@ class VersionResource extends Resource
                 Tables\Columns\TextColumn::make('expiry_date')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextInputColumn::make('progress')
+                    ->rules(['required', 'max:255']),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

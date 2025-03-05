@@ -125,6 +125,8 @@ class ManufacturResource extends Resource
                 Tables\Columns\TextColumn::make('last_installation_date')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextInputColumn::make('progress')
+                    ->rules(['required', 'max:255']),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
