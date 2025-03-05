@@ -10,6 +10,11 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends BaseWidget
 {
+    public static function canView(): bool
+    {
+        return auth()->user()->hasPermissionTo('view.widget.stats');
+    }
+
     protected function getStats(): array
     {
         return [
