@@ -24,12 +24,6 @@ class ManufacturObserver
         $expiryDate = Carbon::parse($manufactur->last_installation_date);
         $now = now();
 
-        // Check if 2 hours have passed since last notification
-        $lastNotified = Carbon::parse($manufactur->last_notification_time ?? '2000-01-01');
-        if ($now->diffInHours($lastNotified) < 2) {
-            return;
-        }
-
         $notifications = [
             ['days' => 90, 'field' => 'notify_90_days', 'notified' => 'is_notified_90'],
             ['days' => 30, 'field' => 'notify_30_days', 'notified' => 'is_notified_30'],
@@ -37,7 +31,7 @@ class ManufacturObserver
         ];
 
         foreach ($notifications as $notification) {
-            if ($manufactur->{$notification['field']}) {
+            if ($manufactur->{$notification['field']} && !$manufactur->{$notification['notified']}) {
                 $daysBeforeExpiry = $expiryDate->copy()->subDays($notification['days']);
 
                 if ($now->gte($daysBeforeExpiry)) {
@@ -45,7 +39,6 @@ class ManufacturObserver
                     $notifier->send();
 
                     $manufactur->update([
-                        'last_notification_time' => now(),
                         $notification['notified'] => true
                     ]);
                 }
