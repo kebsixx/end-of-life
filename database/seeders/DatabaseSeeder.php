@@ -6,30 +6,51 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Default technician credentials:
-        // Username: technician
-        // Email: technician@example.com
-        // Password: password
+        // Create permissions first
+        Permission::create(['name' => 'manage.all']);
+        Permission::create(['name' => 'view.end-of-life']);
+        Permission::create(['name' => 'view.widget.stats']);
+        Permission::create(['name' => 'view.dashboard']);
 
-        User::create([
+        // Create roles
+        $technicianRole = Role::create(['name' => 'technician']);
+        $userRole = Role::create(['name' => 'user']);
+
+        // Assign permissions to roles
+        $technicianRole->givePermissionTo([
+            'manage.all',
+            'view.end-of-life',
+            'view.widget.stats',
+            'view.dashboard'
+        ]);
+
+        $userRole->givePermissionTo([
+            'view.end-of-life'
+        ]);
+
+        // Create users with roles
+        $technician = User::create([
             'name' => 'Teknisi',
             'username' => 'technician',
             'email' => 'technician@example.com',
             'password' => Hash::make('password'),
         ]);
+        $technician->assignRole('technician');
 
-        // Test user for development
-        User::create([
+        $user = User::create([
             'name' => 'User',
             'username' => 'useruser',
             'email' => 'user@example.com',
             'password' => Hash::make('userpassword'),
         ]);
+        $user->assignRole('user');
 
         // Categories Seed
         $categories = [
