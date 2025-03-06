@@ -14,6 +14,7 @@ class Manufactur extends Model
         'license_number',
         'first_installation_date',
         'last_installation_date',
+        'progress',
         'notify_90_days',
         'notify_30_days',
         'notify_7_days',

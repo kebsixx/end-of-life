@@ -15,6 +15,7 @@ class Version extends Model
         'release_date',
         'expiry_date',
         'version_description',
+        'progress',
         'notify_90_days',
         'notify_30_days',
         'notify_7_days',

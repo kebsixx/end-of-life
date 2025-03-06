@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Manufactur;
-use App\Models\User;
 use App\Notifications\LicenseExpiryNotification;
 use Carbon\Carbon;
 
@@ -44,20 +43,5 @@ class ManufacturObserver
                 }
             }
         }
-    }
-
-    private function calculateNotifyDate($manufactur): Carbon
-    {
-        $expiryDate = Carbon::parse($manufactur->last_installation_date);
-
-        $days = match ($manufactur->notification_period) {
-            '1 day' => 1,
-            '3 days' => 3,
-            '1 week' => 7,
-            '2 weeks' => 14,
-            default => 7,
-        };
-
-        return $expiryDate->copy()->subDays($days);
     }
 }
